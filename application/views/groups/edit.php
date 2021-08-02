@@ -152,6 +152,21 @@
                         } ?>></td>
                       </tr>
                       <tr>
+                        <td>Vendors</td>
+                        <td><input type="checkbox" name="permission[]" id="permission" class="minimal" value="createVendor" <?php if($serialize_permission) {
+                          if(in_array('createVendor', $serialize_permission)) { echo "checked"; } 
+                        } ?>></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" class="minimal" value="updateVendor" <?php if($serialize_permission) {
+                          if(in_array('updateVendor', $serialize_permission)) { echo "checked"; } 
+                        } ?>></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" class="minimal" value="viewVendor" <?php if($serialize_permission) {
+                          if(in_array('viewVendor', $serialize_permission)) { echo "checked"; } 
+                        } ?>></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" class="minimal" value="deleteVendor" <?php if($serialize_permission) {
+                          if(in_array('deleteVendor', $serialize_permission)) { echo "checked"; } 
+                        } ?>></td>
+                      </tr>
+                      <tr>
                         <td>Attributes</td>
                         <td><input type="checkbox" name="permission[]" id="permission" class="minimal" value="createAttribute" <?php if($serialize_permission) {
                           if(in_array('createAttribute', $serialize_permission)) { echo "checked"; } 

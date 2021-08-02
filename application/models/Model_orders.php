@@ -21,6 +21,18 @@ class Model_orders extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getProductFromOrders(){
+		$sql = "SELECT 'id' FROM prodcuts";
+		$query = $this->db->query($sql);
+		$product_ids =  $query->row_array();
+		
+		$sql = "SELECT * FROM orders_item WhereIn id = ?";
+		$query = $this->db->query($sql,array($product_ids));
+		return $query->result_array();
+			console.log($query->row_array());
+			return $query->row_array();
+			
+	}
 	// get the orders item data
 	public function getOrdersItemData($order_id = null)
 	{
@@ -74,6 +86,7 @@ class Model_orders extends CI_Model
     		// now decrease the stock from the product
     		$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
     		$qty = (int) $product_data['qty'] - (int) $this->input->post('qty')[$x];
+			
 
     		$update_product = array('qty' => $qty);
 
@@ -152,8 +165,9 @@ class Model_orders extends CI_Model
 	    		// now decrease the stock from the product
 	    		$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
 	    		$qty = (int) $product_data['qty'] - (int) $this->input->post('qty')[$x];
-
-	    		$update_product = array('qty' => $qty);
+				
+	
+				$update_product = array('qty' => $qty);
 	    		$this->model_products->update($update_product, $this->input->post('product')[$x]);
 	    	}
 
@@ -169,8 +183,23 @@ class Model_orders extends CI_Model
 			$this->db->where('id', $id);
 			$delete = $this->db->delete('orders');
 
-			$this->db->where('order_id', $id);
-			$delete_item = $this->db->delete('orders_item');
+			$sql = "SELECT product_id,qty FROM orders_item WHERE order_id = ?";
+		    $query = $this->db->query($sql, array($id));
+	        $result = $query->result_array();
+			foreach ($result as $k => $v) {
+				$product_id = $v['product_id'];
+				$qty = $v['qty'];
+				// get the product 
+				$product_data = $this->model_products->getProductData($product_id);
+				$update_qty = $qty + $product_data['qty'];
+				$update_product_data = array('qty' => $update_qty);
+				
+				// update the product qty
+				$this->model_products->update($update_product_data, $product_id);
+			}
+			$query = $this->db->where('order_id', $id);
+			// var_dump($result);
+			$delete_item = $query->delete('orders_item');
 			return ($delete == true && $delete_item) ? true : false;
 		}
 	}

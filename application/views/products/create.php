@@ -54,29 +54,66 @@
                       </div>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label for="brands">Brand</label>
+                  <select class="form-control select_group" id="brand" name="brand">
+                    <?php foreach ($brands as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
 
+                <div class="form-group">
+                  <label for="vendor">Vendor</label>
+                  <select class="form-control select_group" id="vendor" name="vendor">
+                    <?php foreach ($vendors as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="category">Category</label>
+                  <select class="form-control select_group" id="category" name="category[]">
+                    <?php foreach ($category as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
                 <div class="form-group">
                   <label for="product_name">Product name</label>
                   <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" autocomplete="off"/>
                 </div>
-
                 <div class="form-group">
-                  <label for="sku">SKU</label>
-                  <input type="text" class="form-control" id="sku" name="sku" placeholder="Enter sku" autocomplete="off" />
+                  <label for="bill_no">Bill number</label>
+                  <input type="text" class="form-control" id="bill_no" name="bill_no" placeholder="Enter bill number" autocomplete="off"/>
                 </div>
-                <!-- <div class="form-group">
-                  <label for="cost">Cost Price</label>
-                  <input type="text" class="form-control" id="cost" name="cost" placeholder="Enter cost price" autocomplete="off" />
-                </div> -->
+                <div class="form-group">
+                  <label for="date_time">Date</label>
+                  <input type="date" class="form-control" id="date_time" name="date_time" placeholder="Enter date" autocomplete="off"/>
+                </div>
+                <div class="form-group">
+                  <label for="model">Model</label>
+                  <input type="text" class="form-control" id="model" name="model" placeholder="Enter model" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                  <label for="sku">Code</label>
+                  <input type="text" class="form-control" id="sku" name="sku" placeholder="Enter code" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                  <label for="qty">Qty</label>
+                  <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                  <label for="cost_price">Cost Price</label>
+                  <input type="text" class="form-control" id="cost_price" name="cost_price" placeholder="Enter cost price" autocomplete="off" />
+                </div>
                 <div class="form-group">
                   <label for="price">Selling Price</label>
                   <input type="text" class="form-control" id="price" name="price" placeholder="Enter selling price" autocomplete="off" />
                 </div>
 
-                <div class="form-group">
-                  <label for="qty">Qty</label>
-                  <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" autocomplete="off" />
-                </div>
+                
 
                 <div class="form-group">
                   <label for="description">Description</label>
@@ -98,40 +135,16 @@
                   <?php endforeach ?>
                 <?php endif; ?>
 
-                <div class="form-group">
-                  <label for="brands">Brands</label>
-                  <select class="form-control select_group" id="brands" name="brands[]" multiple="multiple">
-                    <?php foreach ($brands as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
-                </div>
+                
 
-                <div class="form-group">
-                  <label for="category">Category</label>
-                  <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
-                    <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
-                </div>
-
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="store">Store</label>
                   <select class="form-control select_group" id="store" name="store">
                     <?php foreach ($stores as $k => $v): ?>
                       <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
                     <?php endforeach ?>
                   </select>
-                </div>
-
-                <div class="form-group">
-                  <label for="store">Availability</label>
-                  <select class="form-control" id="availability" name="availability">
-                    <option value="1">Yes</option>
-                    <option value="2">No</option>
-                  </select>
-                </div>
+                </div> -->
 
               </div>
               <!-- /.box-body -->

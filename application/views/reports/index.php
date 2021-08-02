@@ -71,7 +71,7 @@
               <table id="datatables" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Month - Year</th>
+                  <th>Year - Month</th>
                   <th>Amount</th>
                 </tr>
                 </thead>
@@ -95,7 +95,7 @@
                     <th>Total Amount</th>
                     <th>
                       <?php //echo $company_currency . ' ' . array_sum($parking_data); ?>
-                      <?php echo array_sum($results); ?>
+                      <?php echo ($company_currency .' '. array_sum($results)); ?>
                     </th>
                   </tr>
                 </tbody>

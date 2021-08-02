@@ -49,7 +49,7 @@
                   <label for="date" class="col-sm-12 control-label">Date: <?php echo date('Y-m-d') ?></label>
                 </div>
                 <div class="form-group">
-                  <label for="time" class="col-sm-12 control-label">Date: <?php echo date('h:i a') ?></label>
+                  <label for="time" class="col-sm-12 control-label">Time: <?php echo date('h:i a') ?></label>
                 </div>
 
                 <div class="col-md-4 col-xs-12 pull pull-left">
@@ -92,21 +92,27 @@
                    <tbody>
 
                     <?php if(isset($order_data['order_item'])): ?>
-                      <?php $x = 1; ?>
+                      <?php $x = 1;$max = 0; ?>
                       <?php foreach ($order_data['order_item'] as $key => $val): ?>
-                        <?php //print_r($v); ?>
+                        
                        <tr id="row_<?php echo $x; ?>">
                          <td>
-                          <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
+                          <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange = "productQty(<?php echo $x; ?>)"  required>
                               <option value=""></option>
                               <?php foreach ($products as $k => $v): ?>
                                 <option value="<?php echo $v['id'] ?>" <?php if($val['product_id'] == $v['id']) { echo "selected='selected'"; } ?>><?php echo $v['name'] ?></option>
                               <?php endforeach ?>
                             </select>
                           </td>
-                          <td><input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control" required onkeyup="getTotal(<?php echo $x; ?>)" value="<?php echo $val['qty'] ?>" autocomplete="off"></td>
+                          <?php foreach ($products as $k => $v): ?>
+                            <?php if($val['product_id'] == $v['id']){
+                                $max = $v['qty'];
+                            }?>
+                            <?php endforeach ?>
+                          
+                          <td><input type="number" name="qty[]" max = "<?php  echo($val['qty'] +  $max) ?>" id="qty_<?php echo $x; ?>" class="form-control" required onchange="getTotal(<?php echo $x; ?>)" onkeyup="getTotal(<?php echo $x; ?>)" value="<?php echo $val['qty'] ?>"  autocomplete="off"></td>
                           <td>
-                            <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control" disabled value="<?php echo $val['rate'] ?>" autocomplete="off">
+                            <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control" onkeyup="getProductData(<?php echo $x; ?>)" value="<?php echo $val['rate'] ?>" autocomplete="off"required>
                             <input type="hidden" name="rate_value[]" id="rate_value_<?php echo $x; ?>" class="form-control" value="<?php echo $val['rate'] ?>" autocomplete="off">
                           </td>
                           <td>
@@ -150,12 +156,12 @@
                     </div>
                   </div>
                   <?php endif; ?>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label for="discount" class="col-sm-5 control-label">Discount</label>
                     <div class="col-sm-7">
                       <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount" onkeyup="subAmount()" value="<?php echo $order_data['order']['discount'] ?>" autocomplete="off">
                     </div>
-                  </div>
+                  </div> -->
                   <div class="form-group">
                     <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>
                     <div class="col-sm-7">
@@ -252,7 +258,7 @@
               // console.log(reponse.x);
                var html = '<tr id="row_'+row_id+'">'+
                    '<td>'+ 
-                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange = productQty('+row_id+')>'+
                         '<option value=""></option>';
                         $.each(response, function(index, value) {
                           html += '<option value="'+value.id+'">'+value.name+'</option>';             
@@ -260,8 +266,8 @@
                         
                       html += '</select>'+
                     '</td>'+ 
-                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')"></td>'+
-                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" disabled><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"></td>'+
+                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onkeyup="getProductData('+row_id+')" required><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
                     '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
@@ -297,7 +303,30 @@
     }
   }
 
-  // get the product information from the server
+  function productQty(row_id){
+    var product_id = $("#product_"+row_id).val();  
+
+    if(product_id == "") {
+      $("#rate_"+row_id).val("");
+      $("#rate_value_"+row_id).val("");
+
+      $("#qty_"+row_id).val("");           
+
+      $("#amount_"+row_id).val("");
+      $("#amount_value_"+row_id).val("");
+
+    } 
+    $.ajax({
+        url: base_url + 'orders/getProductValueById',
+        type: 'post',
+        data: {product_id : product_id},
+        dataType: 'json',
+        success:function(response) {
+          $("#qty_"+row_id).val(1)
+          $("#qty_"+row_id).attr("max", response.qty)
+        }
+      });
+  }
   function getProductData(row_id)
   {
     var product_id = $("#product_"+row_id).val();    
@@ -311,28 +340,28 @@
       $("#amount_value_"+row_id).val("");
 
     } else {
-      $.ajax({
-        url: base_url + 'orders/getProductValueById',
-        type: 'post',
-        data: {product_id : product_id},
-        dataType: 'json',
-        success:function(response) {
-          // setting the rate value into the rate input field
+      // $.ajax({
+      //   url: base_url + 'orders/getProductValueById',
+      //   type: 'post',
+      //   data: {product_id : product_id},
+      //   dataType: 'json',
+      //   success:function(response) {
+      //     // setting the rate value into the rate input field
           
-          $("#rate_"+row_id).val(response.price);
-          $("#rate_value_"+row_id).val(response.price);
+          
+          $("#rate_value_"+row_id).val($("#rate_"+row_id).val());
 
-          $("#qty_"+row_id).val(1);
-          $("#qty_value_"+row_id).val(1);
+          // $("#qty_"+row_id).val(1);
+          // $("#qty_value_"+row_id).val(1);
 
-          var total = Number(response.price) * 1;
+          var total = Number($("#rate_"+row_id).val()) * Number($("#qty_"+row_id).val()) ;
           total = total.toFixed(2);
           $("#amount_"+row_id).val(total);
           $("#amount_value_"+row_id).val(total);
           
           subAmount();
-        } // /success
-      }); // /ajax function to fetch the product data 
+      //   } // /success
+      // }); // /ajax function to fetch the product data 
     }
   }
 

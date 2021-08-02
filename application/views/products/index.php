@@ -48,13 +48,15 @@
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
-                <th>Image</th>
-                <th>SKU</th>
+                <th>Bill number</th>
+                <th>Brand</th>
                 <th>Product Name</th>
-                <th>Price</th>
+                <th>Code</th>
+                <th>Model</th>
+                <th>Cost Price</th>
                 <th>Qty</th>
-                <th>Store</th>
-                <th>Availability</th>
+                <th>Vendor</th>
+                <th>Since</th>
                 <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                   <th>Action</th>
                 <?php endif; ?>
@@ -112,6 +114,7 @@ var base_url = "<?php echo base_url(); ?>";
 $(document).ready(function() {
 
   $("#mainProductNav").addClass('active');
+  $("#manageProductNav").addClass('active');
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({
